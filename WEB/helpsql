@@ -1,0 +1,25 @@
+Lancer le server sql
+----------------------
+sudo docker run -d -e MYSQL_ROOT_PASSWORD="ephec" -p 3307:3307 mysql:latest
+
+Lier server sql
+----------------
+sudo docker run --link container:mysql -d app-that-uses-mysql
+
+IN database
+-----------
+docker exec -it <container id> /bin/bash
+mysql -u root -p
+password = ephec
+
+create database toys
+use toys
+create table produit (npro varchar(4), libelle varchar(100), prix int, qstock int);
+
+insert into produit (npro, libelle, prix, qstock) values("AR01", "lego", 150, 24),("BR01", "meccano", 111, 350),("CL01", "Rasti", 101, 350),("CR01", "megaBloks", 150, 80);
+
+//create image from Dockerfile
+docker build --no-cache -t webimage .
+
+// lancer le webserver 
+docker run --link hopeful_galileo:mysql -it --name mywebserver -d -p 80:80 webimage
